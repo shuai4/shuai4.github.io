@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zn-Hans">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="杜帅的技术博客">
+  <meta name="description" content="Web 开发相关 TCP 的三次握手 简单理解深入理解 第一次握手：建立连接。客户端发送连接请求报文段，将 SYN 位置为 1，Sequence Number 为 x；然后，客户端进入 SYN_SEND 状态，等待服务器的确认 第二次握手：服务器收到 SYN 报文段。服务器收到客户端的 SYN 报文段，需要对这个 SYN 报文段进行确认，设置 Acknowledgment Number 为 x&#43;1(Sequence Number&#43;1)；同时，自己自己还要发送 SYN 请求信息，将 SYN 位置为 1，Sequence Number 为 y；服务器端将上述所有信息放到一个报文段（即 SYN&#43;ACK 报">
+  
+  <meta property="og:title" content="Web开发" />
+<meta property="og:description" content="Web 开发相关 TCP 的三次握手 简单理解深入理解 第一次握手：建立连接。客户端发送连接请求报文段，将 SYN 位置为 1，Sequence Number 为 x；然后，客户端进入 SYN_SEND 状态，等待服务器的确认 第二次握手：服务器收到 SYN 报文段。服务器收到客户端的 SYN 报文段，需要对这个 SYN 报文段进行确认，设置 Acknowledgment Number 为 x&#43;1(Sequence Number&#43;1)；同时，自己自己还要发送 SYN 请求信息，将 SYN 位置为 1，Sequence Number 为 y；服务器端将上述所有信息放到一个报文段（即 SYN&#43;ACK 报" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/2017-06/web%E5%BC%80%E5%8F%91/" />
+<meta property="article:published_time" content="2017-06-26T15:04:48&#43;08:00"/>
+<meta property="article:modified_time" content="2017-06-26T15:04:48&#43;08:00"/>
+
+
+
+  <title>
+  
+       Web开发 | 杜帅的技术博客 
+  
+  </title>
+
+  <link rel="canonical" href="/blog/2017-06/web%E5%BC%80%E5%8F%91/">
+
+  
+  
+
+  
+  <link href="/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+    
+    <link rel="stylesheet" href="/js/vendors/katex/katex.min.css">
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="/">
+          
+        <img class="avatar" src="/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> 杜帅的技术博客</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/blog/" >Blog  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/moment/" >Moment  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/about/" >About  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('/img/header-slides/raw_1515691746.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('/img/header-slides//raw_1515847341.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="/">
+          
+            <img class="pull-right avatar avatar-md" src="/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>杜帅的技术博客</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+              <a href="//github.com/you" target="_blank" rel="noopener"><i class="fab fa-github pr-1" aria-hidden="true"></i></a>    
+            
+            
+              <a href="//linkedin.com/in/you" target="_blank" rel="noopener"><i class="fab fa-linkedin pr-1" aria-hidden="true"></i></a>
+            
+
+            
+              <a href="//facebook.com/you" target="_blank" rel="noopener"><i class="fab fa-facebook pr-1" aria-hidden="true"></i></a>
+            
+
+            
+            <a href="//google.com/you" target="_blank" rel="noopener"><i class="fab fa-google-plus pr-1" aria-hidden="true"></i></a>
+            
+
+            
+                <a href="//twitter.com/you" target="_blank" rel="noopener"><i class="fab fa-twitter pr-1" aria-hidden="true"></i></a>
+            
+
+            
+                <a href="//instagram.com/you" target="_blank" rel="noopener"><i class="fab fa-instagram pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+                <a href="//px500" target="_blank" rel="noopener"><i class="fab fa-500px pr-1" aria-hidden="true"></i></a>
+            
+    
+        
+            
+                <a href="mailto:you@email.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="/categories/%E6%9D%82%E6%8A%80%E6%B5%85%E5%B0%9D"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 杂技浅尝 </a></li>
+      
+    
+    
+      
+        <li><a href="/series/web%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Web开发相关</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">Web开发</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jun 26, 2017</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>12 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            
+
+<h3 id="web-开发相关">Web 开发相关</h3>
+
+<h3 id="tcp-的三次握手">TCP 的三次握手</h3>
+
+<p>简单理解<img src="/img/tcp3.png" alt="tcp_image" />
+<img src="/img/tcp32.png" alt="tcp_image" />
+深入理解</p>
+
+<p>第一次握手：建立连接。客户端发送连接请求报文段，将 SYN 位置为 1，Sequence Number 为 x；然后，客户端进入 SYN_SEND 状态，等待服务器的确认</p>
+
+<p>第二次握手：服务器收到 SYN 报文段。服务器收到客户端的 SYN 报文段，需要对这个 SYN 报文段进行确认，设置 Acknowledgment Number 为 x+1(Sequence Number+1)；同时，自己自己还要发送 SYN 请求信息，将 SYN 位置为 1，Sequence Number 为 y；服务器端将上述所有信息放到一个报文段（即 SYN+ACK 报文段）中，一并发送给客户端，此时服务器进入 SYN_RECV 状态</p>
+
+<p>第三次握手：客户端收到服务器的 SYN+ACK 报文段。然后将 Acknowledgment Number 设置为 y+1，向服务器发送 ACK 报文段，这个报文段发送完毕以后，客户端和服务器端都进入 ESTABLISHED 状态，完成 TCP 三次握手。</p>
+
+<p>完成了三次握手，客户端和服务器端就可以开始传送数据。以上就是 TCP 三次握手的总体介绍。</p>
+
+<h3 id="tcp-的四次挥手">TCP 的四次挥手</h3>
+
+<p>当客户端和服务器通过三次握手建立了 TCP 连接以后，当数据传送完毕，肯定是要断开 TCP 连接</p>
+
+<p>那对于 TCP 的断开连接，这里就有了“四次挥手”</p>
+
+<p>先由客户端向服务器端发送一个 FIN，请求关闭数据传输。</p>
+
+<p>当服务器接收到客户端的 FIN 时，向客户端发送一个 ACK，其中 ack 的值等于 FIN+SEQ</p>
+
+<p>然后服务器向客户端发送一个 FIN，告诉客户端应用程序关闭。</p>
+
+<p>当客户端收到服务器端的 FIN 是，回复一个 ACK 给服务器端。其中 ack 的值等于 FIN+SEQ</p>
+
+<p><img src="/img/tcp4.jpg" alt="tcp_image" /></p>
+
+<h3 id="业务模块描述">业务模块描述</h3>
+
+<p>随着电子商务的发展，网上购物正在趋于一种时尚，电子商务网站也逐渐成为企业顺应潮流的标配。大多数人知道可能在电子商务网站前端有查询，注册登录，购物车等等功能。可是您知道建设电子商务网站后台功能模块都有哪些么?今天我们就聊聊电商网站后台功能模块的那些事。</p>
+
+<p>电子商务网站整个系统的后端管理，按功能划分为九大模块，包括商品组织管理、订单处理、内容发布管理等模块。</p>
+
+<p>一、后台主页： 各类主要信息的概要统计，包括客户信息、 订单信息、商品信息、库存信息、评论和最近反馈等。</p>
+
+<p>二、商品模块：</p>
+
+<p>1.商品管理：商品和商品包的添加、修改、 删除、复制、批处理、商品计划上下架、SEO、商品多媒体上传等，可以定义商品是实体还是虚拟，可以定义是否预订、是否缺货销售等。</p>
+
+<p>2.商品目录管理：树形的商品目录组织管理，并可以设置关联/商品推荐。</p>
+
+<p>3.商品类型管理：定义商品的类型，设置自定义属性项、SKU 项和商品评论项。</p>
+
+<p>4.品牌管理：添加、修改、删除、上传品牌 LOGO。</p>
+
+<p>5.商品评论管理：回复、删除。</p>
+
+<p>三、销售模块： 1.促销管理：分为目录促销、购物车促销和 优惠券促销三类，可以随意定义不同的促销规则，满足日常促销活动：购物折扣、购物赠送积分、购物赠送优惠券、购物免运输费、特价商品、特定会员购买特定商品、折上折、买二送一等。 2.礼券管理：添加、发送礼券</p>
+
+<p>3.关联/推荐管理――基于规则引擎，可以支持多种推荐类型，可手工添加或者自动评估商品。</p>
+
+<p>四、订单模块：</p>
+
+<p>1.订单管理：可以编辑、解锁、取消订单、 拆分订单、添加商品、移除商品、确认可备货等，也可对因促销规则发生变化引起的价格变化进行调整。订单处理完可发起退货、换货流程。</p>
+
+<p>2.支付：常用于订单支付信息的查看和手工 支付两种功能。手工支付订单，常用于“款到发货”类型的订单，可理解为对款到发货这类订单的一种补登行为。</p>
+
+<p>3.结算：提供商家与第三方物流公司的结算 功能，通常是月结。同时，结算功能也是常用来对“货到付款”这一类型订单支付后的数据进行对帐</p>
+
+<p>五、库存模块：</p>
+
+<p>1.库存管理：引入库存的概念，不包括销售 规则为永远可售的商品，一个 SKU 对应一个库存量。库存管理提供增加、减少等调整库存量的功能;另外，也可对具具体的 SKU 设置商品的保留数量、*小库存量、再进货数量。每条 SKU 商品的具体库存操作都会记录在库存明细记录里边。</p>
+
+<p>2.查看库存明细记录。</p>
+
+<p>3.备货/发货：创建备货单、打印备货单、打印发货单、打印 EMS 快递单、完成发货等一系列物流配送的操作。</p>
+
+<p>4.退/换货：对退/换货的订单进行收货流程的处理。</p>
+
+<p>六、内容模块：</p>
+
+<p>1.内容管理：包括内容管理以及内容目录管理。内容目录由树形结构组织管理。类似于商品目录的树形结构，可设置目录是否为链接目录。</p>
+
+<p>2.无限制创建独立内容网页，比如关于我们，联系我们。</p>
+
+<p>3.广告管理：添加、修改、删除、上传广告、 定义广告有效时限。</p>
+
+<p>4.可自由设置商城导航栏目以及栏目内容、栏目链接。</p>
+
+<p>七、客户模块：</p>
+
+<p>1.客户管理：添加、删除、修改、重设密码、 发送邮件等。 2.反馈管理：删除、回复。</p>
+
+<p>3.消息订阅管理：添加、删除、修改消息组 和消息、分配消息组、查看订阅人。 4.会员资格：添加、删除、修改。</p>
+
+<p>八、系统模块：</p>
+
+<p>1.安全管理：管理员、角色权限分配和安全日志</p>
+
+<p>2.系统属性管理：用于管理自定义属性。可关联模块包括商品管理、商品目录管理、内容管理、客户管理。</p>
+
+<p>3.运输与区域：运输公司、运输方式、运输 地区。 4.支付管理：支付方式、支付历史。 5.包装管理：添加、修改、删除。</p>
+
+<p>6.数据导入管理：商品目录导入、商品导入、 会员资料导入。 7.邮件队列管理：监控邮件发送情况，删除 发送异常邮件。</p>
+
+<p>九、报表模块：</p>
+
+<p>缺省数个统计报表，支持时间段过滤、支持按不同状态过滤、支持 HTML、PDF 和 Excel 格式的导出和打印。 1.用户注册统计 2.低库存汇总 3.缺货订单 4.订单汇总 5.退换货</p>
+
+<h3 id="tornado-异步非阻塞框架">Tornado 异步非阻塞框架</h3>
+
+<p>具体操作：<a href="https://v3u.cn/Index_a_id_89">https://v3u.cn/Index_a_id_89</a></p>
+
+<p>Tornado 是一个用 Python 编写的异步 HTTP 服务器，同时也是一个 web 开发框架。</p>
+
+<p>Tornado 优秀的大并发处理能力得益于它的 web server 从底层开始就自己实现了一整套基于 epoll 的单线程异步架构。</p>
+
+<h4 id="一个普通的-tornado-web-服务器通常由四大组件组成">一个普通的 tornado web 服务器通常由四大组件组成。</h4>
+
+<p>ioloop 实例，它是全局的 tornado 事件循环，是服务器的引擎核心，示例中 tornado.ioloop.IOLoop.current()就是默认的 tornado ioloop 实例。</p>
+
+<p>app 实例，它代表着一个完成的后端 app，它会挂接一个服务端套接字端口对外提供服务。一个 ioloop 实例里面可以有多个 app 实例，示例中只有 1 个，实际上可以允许多个，不过一般几乎不会使用多个。</p>
+
+<p>handler 类，它代表着业务逻辑，我们进行服务端开发时就是编写一堆一堆的 handler 用来服务客户端请求。</p>
+
+<p>路由表，它将指定的 url 规则和 handler 挂接起来，形成一个路由映射表。当请求到来时，根据请求的访问 url 查询路由映射表来找到相应的业务 handler。</p>
+
+<p>这四大组件的关系是，一个 ioloop 包含多个 app(管理多个服务端口)，一个 app 包含一个路由表，一个路由表包含多个 handler。ioloop 是服务的引擎核心，它是发动机，负责接收和响应客户端请求，负责驱动业务 handler 的运行，负责服务器内部定时任务的执行。当一个请求到来时，ioloop 读取这个请求解包成一个 http 请求对象，找到该套接字上对应 app 的路由表，通过请求对象的 url 查询路由表中挂接的 handler，然后执行 handler。handler 方法执行后一般会返回一个对象，ioloop 负责将对象包装成 http 响应对象序列化发送给客户端。</p>
+
+<h3 id="同步-异步编程差异">同步、异步编程差异：</h3>
+
+<p>你打电话问书店老板有没有《python 开发》这本书，如果是同步通信机制，书店老板会说，你稍等，”我查一下&rdquo;，然后开始查啊查，等查好了（可能是 5 秒，也可能是一天）告诉你结果（返回结果）。</p>
+
+<p>而异步通信机制，书店老板直接告诉你我查一下啊，查好了打电话给你，然后直接挂电话了（不返回结果）。然后查好了，他会主动打电话给你。在这里老板通过“回电”这种方式来回调。</p>
+
+<h3 id="阻塞与非阻塞的差异">阻塞与非阻塞的差异：</h3>
+
+<p>还是你打电话问书店老板有没有《python 开发》这本书，你如果是阻塞式调用，你会一直把自己“挂起”，直到得到这本书有没有的结果</p>
+
+<p>如果是非阻塞式调用，你不管老板有没有告诉你，你自己先一边去干别的了， 当然你也要偶尔过几分钟 check 一下老板有没有返回结果。</p>
+
+<p>大部分 Web 应用都是阻塞性质的，也就是说当一个请求被处理时，这个进程就会被挂起直至请求完成，比如 Django,而 Tornado 的思想是当我们在等待结果的时候不阻塞，转而我们给框架一个回调函数作为参数，让框架在收到结果的时候通过回调函数继续操作。这样，服务器就可以被解放去接受其他客户端的请求了。</p>
+
+<h3 id="get-和-post-区别">get 和 post 区别</h3>
+
+<p>GET 在浏览器回退时是无害的，而 POST 会再次提交请求。</p>
+
+<p>GET 产生的 URL 地址可以被 Bookmark，而 POST 不可以。</p>
+
+<p>GET 请求会被浏览器主动 cache，而 POST 不会，除非手动设置。</p>
+
+<p>GET 请求只能进行 url 编码，而 POST 支持多种编码方式。</p>
+
+<p>GET 请求参数会被完整保留在浏览器历史记录里，而 POST 中的参数不会被保留。</p>
+
+<p>GET 请求在 URL 中传送的参数是有长度限制的，而 POST 么有。</p>
+
+<p>对参数的数据类型，GET 只接受 ASCII 字符，而 POST 没有限制。</p>
+
+<p>GET 比 POST 更不安全，因为参数直接暴露在 URL 上，所以不能用来传递敏感信息。</p>
+
+<p>GET 参数通过 URL 传递，POST 放在 Request body 中。</p>
+
+<h3 id="简述-mvc-模式和-mvt-模式">简述 MVC 模式和 MVT 模式</h3>
+
+<p>所谓 MVC 就是把 Web 应用分为模型(M)，控制器&copy;和视图(V)三层,他们之间以一种插件式的、松耦合的方式连接在一起，模型负责业务对象与数据库的映射(ORM)，视图负责与用户的交互(页面)，控制器接受用户的输入调用模型和视图完成用户的请求
+<img src="/img/mvc.jpg" alt="tcp_image" />
+Django 的 MTV 模式本质上和 MVC 是一样的，也是为了各组件间保持松耦合关系，只是定义上有些许不同，Django 的 MTV 分别是值：</p>
+
+<p>M 代表模型（Model）： 负责业务对象和数据库的关系映射(ORM)。</p>
+
+<p>T 代表模板 (Template)：负责如何把页面展示给用户(html)。</p>
+
+<p>V 代表视图（View）： 负责业务逻辑，并在适当时候调用 Model 和 Template。</p>
+
+<p>除了以上三层之外，还需要一个 URL 分发器，它的作用是将一个个 URL 的页面请求分发给不同的 View 处理，View 再调用相应的 Model 和 Template</p>
+
+<h3 id="django-flask-tornado-的对比">Django 、Flask、Tornado 的对比</h3>
+
+<p>1.Django 走的是大而全的方向,开发效率高。它的 MTV 框架,自带的 ORM,admin 后台管理,自带的 sqlite 数据库和开发测试用的服务器 给开发者提高了超高的开发效率</p>
+
+<p>2.Flask 是轻量级的框架,自由,灵活,可扩展性很强,核心基于 Werkzeug WSGI 工具和 jinja2 模板引擎</p>
+
+<p>3.Tornado 走的是少而精的方向,性能优越。它最出名的是异步非阻塞的设计方式</p>
+
+<p>Tornado 的两大核心模块： 1.iostraem：对非阻塞式的 socket 进行简单的封装 2.ioloop：对 I/O 多路复用的封装，它实现了一个单例</p>
+
+<h3 id="django-请求的生命周期">django 请求的生命周期</h3>
+
+<p>1.wsgi,请求封装后交给 web 框架 （Flask、Django）</p>
+
+<p>2.中间件，对请求进行校验或在请求对象中添加其他相关数据，例如：csrf、request.session</p>
+
+<p>3.路由匹配 根据浏览器发送的不同 url 去匹配不同的视图函数</p>
+
+<p>4.视图函数，在视图函数中进行业务逻辑的处理，可能涉及到：orm、templates =&gt; 渲染</p>
+
+<p>5.中间件，对响应的数据进行处理。</p>
+
+<p>6.wsgi,将响应的内容发送给浏览器。</p>
+
+<h3 id="说一下-django-middlewares-中间件的作用和应用场景">说一下 Django，MIDDLEWARES 中间件的作用和应用场景？</h3>
+
+<p>中间件是介于 request 与 response 处理之间的一道处理过程,用于在全局范围内改变 Django 的输入和输出。</p>
+
+<p>简单的来说中间件是帮助我们在视图函数执行之前和执行之后都可以做一些额外的操作</p>
+
+<p>例如：</p>
+
+<p>1.Django 项目中默认启用了 csrf 保护,每次请求时通过 CSRF 中间件检查请求中是否有正确#token 值</p>
+
+<p>2.当用户在页面上发送请求时，通过自定义的认证中间件，判断用户是否已经登陆，未登陆就去登陆。</p>
+
+<p>3.当有用户请求过来时，判断用户是否在白名单或者在黑名单里</p>
+
+<p>其内置的五个方法: 1.process_request : 请求进来时,权限认证</p>
+
+<p>2.process_view : 路由匹配之后,能够得到视图函数</p>
+
+<p>3.process_exception : 异常时执行</p>
+
+<p>4.process_template_responseprocess : 模板渲染时执行</p>
+
+<p>5.process_response : 请求有响应时执行</p>
+
+<h3 id="谈谈你对-restful-规范的认识">谈谈你对 restful 规范的认识？</h3>
+
+<p>首先 restful 是一种软件架构风格或者说是一种设计风格，并不是标准，它只是提供了一组设计原则和约束条件，主要用于客户端和服务器交互类的软件。
+就像设计模式一样，并不是一定要遵循这些原则，而是基于这个风格设计的软件可以更简洁，更有层次，我们可以根据开发的实际情况，做相应的改变。</p>
+
+<p>它里面提到了一些规范，例如：</p>
+
+<p>1.restful 提倡面向资源编程,在 url 接口中尽量要使用名词，不要使用动词</p>
+
+<p>2、在 url 接口中推荐使用 Https 协议，让网络接口更加安全 <a href="https://baidum/v1/mycss？page=3">https://baidum/v1/mycss？page=3</a> （Https 是 Http 的安全版，即 HTTP 下加入 SSL 层，HTTPS 的安全基础是 SSL， 因此加密的详细内容就需要 SSL（安全套接层协议））</p>
+
+<p>3、在 url 中可以体现版本号 <a href="https://v1.bootcss.com/mycss">https://v1.bootcss.com/mycss</a></p>
+
+<p>不同的版本可以有不同的接口，使其更加简洁，清晰</p>
+
+<p>4、url 中可以体现是否是 API 接口 <a href="https://baidum/api/mycss">https://baidum/api/mycss</a></p>
+
+<p>5、url 中可以添加条件去筛选匹配 <a href="https://baidum/v1/mycss？page=3">https://baidum/v1/mycss？page=3</a></p>
+
+<p>6、可以根据 Http 不同的 method，进行不同的资源操作 （5 种方法：GET / POST / PUT / DELETE / PATCH）</p>
+
+<p>7、响应式应该设置状态码</p>
+
+<p>8、有返回值，而且格式为统一的 json 格式</p>
+
+<p>9、返回错误信息</p>
+
+<p>10、返回结果中要提供帮助链接，即 API 最好做到接口文档</p>
+
+<h3 id="http-与-https-的区别">HTTP 与 HTTPS 的区别</h3>
+
+<p>HTTP（HyperText Transfer Protocol：超文本传输协议）是一种用于分布式、协作式和超媒体信息系统的应用层协议。 简单来说就是一种发布和接收 HTML 页面的方法，被用于在 Web 浏览器和网站服务器之间传递信息。HTTP 默认工作在 TCP 协议 80 端口，用户访问网站 http:// 打头的都是标准 HTTP 服务。HTTP 协议以明文方式发送内容，不提供任何方式的数据加密，如果攻击者截取了 Web 浏览器和网站服务器之间的传输报文，就可以直接读懂其中的信息，因此，HTTP 协议不适合传输一些敏感信息，比如：信用卡号、密码等支付信息。</p>
+
+<p>HTTPS（Hypertext Transfer Protocol Secure：超文本传输安全协议）是一种透过计算机网络进行安全通信的传输协议。HTTPS 经由 HTTP 进行通信，但利用 SSL/TLS 来加密数据包。HTTPS 开发的主要目的，是提供对网站服务器的身份认证，保护交换数据的隐私与完整性。HTTPS 默认工作在 TCP 协议 443 端口，它的工作流程一般如以下方式：1、TCP 三次同步握手 2、客户端验证服务器数字证书 3、DH 算法协商对称加密算法的密钥、hash 算法的密钥 4、SSL 安全加密隧道协商完成 5、网页以加密的方式传输，用协商的对称加密算法和密钥加密，保证数据机密性；用协商的 hash 算法进行数据完整性保护，保证数据不被篡改。</p>
+
+<p>区别：</p>
+
+<p>HTTP 明文传输，数据都是未加密的，安全性较差，HTTPS（SSL+HTTP） 数据传输过程是加密的，安全性较好。</p>
+
+<p>使用 HTTPS 协议需要到 CA（Certificate Authority，数字证书认证机构） 申请证书，一般免费证书较少，因而需要一定费用。证书颁发机构如：Symantec、Comodo、GoDaddy 和 GlobalSign 等。</p>
+
+<p>HTTP 页面响应速度比 HTTPS 快，主要是因为 HTTP 使用 TCP 三次握手建立连接，客户端和服务器需要交换 3 个包，而 HTTPS 除了 TCP 的三个包，还要加上 ssl 握手需要的 9 个包，所以一共是 12 个包。</p>
+
+<p>http 和 https 使用的是完全不同的连接方式，用的端口也不一样，前者是 80，后者是 443。</p>
+
+<p>HTTPS 其实就是建构在 SSL/TLS 之上的 HTTP 协议，所以，要比较 HTTPS 比 HTTP 要更耗费服务器资源。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="/tags/mac" role="button">mac </a></li>
+      
+    
+      <li><a href="/tags/web%E5%BC%80%E5%8F%91" role="button">web开发 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=/blog/2017-06/%E8%AE%A4%E8%AF%86python/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>认识Python</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#web-%e5%bc%80%e5%8f%91%e7%9b%b8%e5%85%b3">
+												 Web 开发相关
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#tcp-%e7%9a%84%e4%b8%89%e6%ac%a1%e6%8f%a1%e6%89%8b">
+												 TCP 的三次握手
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#tcp-%e7%9a%84%e5%9b%9b%e6%ac%a1%e6%8c%a5%e6%89%8b">
+												 TCP 的四次挥手
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%9a%e5%8a%a1%e6%a8%a1%e5%9d%97%e6%8f%8f%e8%bf%b0">
+												 业务模块描述
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#tornado-%e5%bc%82%e6%ad%a5%e9%9d%9e%e9%98%bb%e5%a1%9e%e6%a1%86%e6%9e%b6">
+												 Tornado 异步非阻塞框架
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%80%e4%b8%aa%e6%99%ae%e9%80%9a%e7%9a%84-tornado-web-%e6%9c%8d%e5%8a%a1%e5%99%a8%e9%80%9a%e5%b8%b8%e7%94%b1%e5%9b%9b%e5%a4%a7%e7%bb%84%e4%bb%b6%e7%bb%84%e6%88%90">
+												 一个普通的 tornado web 服务器通常由四大组件组成。
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%90%8c%e6%ad%a5-%e5%bc%82%e6%ad%a5%e7%bc%96%e7%a8%8b%e5%b7%ae%e5%bc%82">
+												 同步、异步编程差异：
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%98%bb%e5%a1%9e%e4%b8%8e%e9%9d%9e%e9%98%bb%e5%a1%9e%e7%9a%84%e5%b7%ae%e5%bc%82">
+												 阻塞与非阻塞的差异：
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#get-%e5%92%8c-post-%e5%8c%ba%e5%88%ab">
+												 get 和 post 区别
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%ae%80%e8%bf%b0-mvc-%e6%a8%a1%e5%bc%8f%e5%92%8c-mvt-%e6%a8%a1%e5%bc%8f">
+												 简述 MVC 模式和 MVT 模式
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#django-flask-tornado-%e7%9a%84%e5%af%b9%e6%af%94">
+												 Django 、Flask、Tornado 的对比
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#django-%e8%af%b7%e6%b1%82%e7%9a%84%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f">
+												 django 请求的生命周期
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%af%b4%e4%b8%80%e4%b8%8b-django-middlewares-%e4%b8%ad%e9%97%b4%e4%bb%b6%e7%9a%84%e4%bd%9c%e7%94%a8%e5%92%8c%e5%ba%94%e7%94%a8%e5%9c%ba%e6%99%af">
+												 说一下 Django，MIDDLEWARES 中间件的作用和应用场景？
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%b0%88%e8%b0%88%e4%bd%a0%e5%af%b9-restful-%e8%a7%84%e8%8c%83%e7%9a%84%e8%ae%a4%e8%af%86">
+												 谈谈你对 restful 规范的认识？
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#http-%e4%b8%8e-https-%e7%9a%84%e5%8c%ba%e5%88%ab">
+												 HTTP 与 HTTPS 的区别
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+      <a href="//github.com/you " target="_blank" rel="noopener"><i class="fab fa-github mr-3" aria-hidden="true"></i></a>    
+    
+    
+      <a href="//linkedin.com/in/you" target="_blank" rel="noopener"><i class="fab fa-linkedin-in mr-3" aria-hidden="true"></i></a>
+    
+
+    
+      <a href="//facebook.com/you" target="_blank" rel="noopener"><i class="fab fa-facebook-f mr-3" aria-hidden="true"></i></a>
+    
+
+    
+    <a href="//google.com/you" target="_blank" rel="noopener"><i class="fab fa-google-plus-g mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//twitter.com/you" target="_blank" rel="noopener"><i class="fab fa-twitter mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//instagram.com/you" target="_blank" rel="noopener"><i class="fab fa-instagram mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//px500" target="_blank" rel="noopener"><i class="fab fa-500px mr-3" aria-hidden="true"></i></a>
+    
+
+
+    
+        <a href="mailto:you@email.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2019 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+  
+  <script src="/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="/js/vendors/katex/katex.min.js"> </script>
+  <script src="/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

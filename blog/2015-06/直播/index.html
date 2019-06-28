@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zn-Hans">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="杜帅的技术博客">
+  <meta name="description" content="直播原理 在视频直播领域，有不同的商家提供各种的商业解决方案，其中比较靠谱的服务商有阿里云直播，腾讯云直播，以及又拍云和网易云的有偿直播服务，服务包括软硬件设备，摄像机，编码器，流媒体服务器等 视频直播的流程可以分为如下几步： 采集 —&gt;处理—&gt;编码和封装—&gt;推流到服务器—&gt;服务器流分发—&gt;播放器流播放 一般情况下视频采集处理后推流到流媒体服务器，第一部分功能完成。第二部分就是">
+  
+  <meta property="og:title" content="直播" />
+<meta property="og:description" content="直播原理 在视频直播领域，有不同的商家提供各种的商业解决方案，其中比较靠谱的服务商有阿里云直播，腾讯云直播，以及又拍云和网易云的有偿直播服务，服务包括软硬件设备，摄像机，编码器，流媒体服务器等 视频直播的流程可以分为如下几步： 采集 —&gt;处理—&gt;编码和封装—&gt;推流到服务器—&gt;服务器流分发—&gt;播放器流播放 一般情况下视频采集处理后推流到流媒体服务器，第一部分功能完成。第二部分就是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/2015-06/%E7%9B%B4%E6%92%AD/" />
+<meta property="article:published_time" content="2015-06-28T15:04:48&#43;08:00"/>
+<meta property="article:modified_time" content="2015-06-28T15:04:48&#43;08:00"/>
+
+
+
+  <title>
+  
+       直播 | 杜帅的技术博客 
+  
+  </title>
+
+  <link rel="canonical" href="/blog/2015-06/%E7%9B%B4%E6%92%AD/">
+
+  
+  
+
+  
+  <link href="/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+    
+    <link rel="stylesheet" href="/js/vendors/katex/katex.min.css">
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="/">
+          
+        <img class="avatar" src="/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> 杜帅的技术博客</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/blog/" >Blog  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/moment/" >Moment  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/about/" >About  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('/img/header-slides/raw_1515691746.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('/img/header-slides//raw_1515847341.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="/">
+          
+            <img class="pull-right avatar avatar-md" src="/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>杜帅的技术博客</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+              <a href="//github.com/you" target="_blank" rel="noopener"><i class="fab fa-github pr-1" aria-hidden="true"></i></a>    
+            
+            
+              <a href="//linkedin.com/in/you" target="_blank" rel="noopener"><i class="fab fa-linkedin pr-1" aria-hidden="true"></i></a>
+            
+
+            
+              <a href="//facebook.com/you" target="_blank" rel="noopener"><i class="fab fa-facebook pr-1" aria-hidden="true"></i></a>
+            
+
+            
+            <a href="//google.com/you" target="_blank" rel="noopener"><i class="fab fa-google-plus pr-1" aria-hidden="true"></i></a>
+            
+
+            
+                <a href="//twitter.com/you" target="_blank" rel="noopener"><i class="fab fa-twitter pr-1" aria-hidden="true"></i></a>
+            
+
+            
+                <a href="//instagram.com/you" target="_blank" rel="noopener"><i class="fab fa-instagram pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+                <a href="//px500" target="_blank" rel="noopener"><i class="fab fa-500px pr-1" aria-hidden="true"></i></a>
+            
+    
+        
+            
+                <a href="mailto:you@email.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="/categories/%E6%9D%82%E6%8A%80%E6%B5%85%E5%B0%9D"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 杂技浅尝 </a></li>
+      
+    
+    
+      
+        <li><a href="/series/web%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Web开发相关</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">直播</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jun 28, 2015</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>3 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            
+
+<h3 id="直播原理">直播原理</h3>
+
+<p>在视频直播领域，有不同的商家提供各种的商业解决方案，其中比较靠谱的服务商有阿里云直播，腾讯云直播，以及又拍云和网易云的有偿直播服务，服务包括软硬件设备，摄像机，编码器，流媒体服务器等</p>
+
+<p>视频直播的流程可以分为如下几步：</p>
+
+<p>采集 —&gt;处理—&gt;编码和封装—&gt;推流到服务器—&gt;服务器流分发—&gt;播放器流播放</p>
+
+<p>一般情况下视频采集处理后推流到流媒体服务器，第一部分功能完成。第二部分就是流媒体服务器，负责把从第一部分接收到的流进行处理并分发给观众。第三部分就是客户端播放，只需要拥有支持流传输协议的播放器即可
+<img src="/img/zhibo.jpg" alt="JWT_image" />
+应用技术点：</p>
+
+<p>nginx-rtmp 搭建直播服务器，配合 FFmpeg 推流，在网页端 vue.js 作为载体利用 video.js 作为流播放器</p>
+
+<p>具体搭建：<a href="https://v3u.cn/a_id_75">https://v3u.cn/a_id_75</a></p>
+
+<h3 id="什么叫做-秒开">什么叫做“秒开” ？</h3>
+
+<p>秒开 即从视频播放开始到真正看到第一帧画面所消耗的时间要尽可能的短（几百毫秒时间），不能让观众有明显的等待时间</p>
+
+<p>这种情况主要依靠第三方服务的优化以及播放器的配合，即依赖阿里云，腾讯云这种三方 sdk 的优化服务，最快可以实现 200ms 左右 的首屏打开速度，如果网络下行足够够好的话甚至可以秒开，如果是自研的推流服务和播放器则相对困难</p>
+
+<h3 id="视频卡顿怎么办">视频卡顿怎么办</h3>
+
+<p>卡顿的原因无外乎三种情况：</p>
+
+<p>1 帧率太低</p>
+
+<p>主播端的 pc 或者手机性能较差，或者有很占 CPU 的后台程序在运行，可能导致视频的帧率太低。正常情况下每秒 15FPS 以上的视频流才能保证观看的流畅度，如果 FPS 低于 10 帧，可以判定为帧率太低，这会导致全部观众的观看体验都很卡顿</p>
+
+<p>2 上传阻塞</p>
+
+<p>主播的 pc 或者手机在推流时会源源不断地产生音视频数据，但如果客户端上传网速太小，那么产生的音视频数据都会被堆积在主播的客户端里传不出去，上传阻塞会导致全部观众的观看体验都很卡顿</p>
+
+<p>3 下行不佳</p>
+
+<p>就是观众的下载带宽跟不上或者网络很波动，比如直播流的码率是 1Mbps 的，也就是每秒钟有 1M 比特的数据流要下载下来，但如果观众端的带宽不够，就会导致观众端体验非常卡顿。 下行不佳只会影响当前网络环境下的观众。</p>
+
+<h3 id="如何降低延迟">如何降低延迟</h3>
+
+<p>按正常情况 RTMP 推流+FLV 播放的正常延迟在 2 秒 - 3 秒左右，太长则是有问题的，如果您发现直播延迟时间特别长，可以按照如下思路来排查。</p>
+
+<p>Step 1. 检查播放协议 不少客户播放协议采用 HLS（m3u8），并感觉延迟较大，这个是正常的。苹果主推的 HLS 是基于大颗粒的 TS 分片的流媒体协议，每个分片都有 5s 以上的时长，分片数量一般为 3 个 - 4 个，所以总延迟在 20s - 30s 就不足为怪。 换用 FLV 作为播放协议即可解决这个问题，但是要注意，如果您要在手机浏览器上观看直播视频，只有 HLS（m3u8） 这一种播放协议可以选择，其它的直播协议在苹果的 Safari 浏览器上都是不支持的。</p>
+
+<p>Step 2. 检查播放器设置</p>
+
+<p>由于自研应用使用的开源播放器 video.js，一些设置可以参考官方文档，如果希望更好的优化，还是建议使用成熟的付费第三方 sdk，比如阿里云</p>
+
+<p>Step 3. 后台不要打水印</p>
+
+<p>众所周知，FFmpeg 有推流打水印的功能，但是这种功能会严重影响直播视频的流畅度</p>
+
+<p>Step 4. 检查 OBS 设置</p>
+
+<p>有不少主播喜欢在 pc 上使用 obs 推流，播放端延迟比较大。建议调整配置对应的参数，并注意要把关键帧间隔设置为 1 或者 2</p>
+
+<h3 id="为何推流不成功">为何推流不成功</h3>
+
+<p>1 直播服务器是否正常启动</p>
+
+<p>检查 nginx 服务是否正常启动，端口是否正在监听</p>
+
+<p>2 网路是否正常？</p>
+
+<p>RTMP 推流所使用的默认端口号是 1935 ，如果您测试时所在网络的防火墙不允许 1935 端口通行，就会遇到连不上与服务器的问题。此时您可以通过切换网络（比如 4G ）来排查是不是这个原因导致的问题。</p>
+
+<p>3 推流 URL 是否被占用？</p>
+
+<p>一个推流 URL 同时只能有一个推流端，第二个尝试去推流的 Client 会被 Nginx 服务拒绝掉。</p>
+
+<h3 id="兼容苹果-mac-os">兼容苹果 Mac os</h3>
+
+<p>我们知道 mac 端的 Safari 浏览器可以直接播放 m3u8 格式的视频流，所以建议为 mac 端定制直播页面，降低开发成本</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="/tags/mac" role="button">mac </a></li>
+      
+    
+      <li><a href="/tags/web%E5%BC%80%E5%8F%91" role="button">web开发 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=/blog/2015-06/web%E5%BC%80%E5%8F%912/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>Web开发2</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=/blog/2017-06/%E8%AE%A4%E8%AF%86python/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>认识Python</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%9b%b4%e6%92%ad%e5%8e%9f%e7%90%86">
+												 直播原理
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%bb%80%e4%b9%88%e5%8f%ab%e5%81%9a-%e7%a7%92%e5%bc%80">
+												 什么叫做“秒开” ？
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%a7%86%e9%a2%91%e5%8d%a1%e9%a1%bf%e6%80%8e%e4%b9%88%e5%8a%9e">
+												 视频卡顿怎么办
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%a6%82%e4%bd%95%e9%99%8d%e4%bd%8e%e5%bb%b6%e8%bf%9f">
+												 如何降低延迟
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%ba%e4%bd%95%e6%8e%a8%e6%b5%81%e4%b8%8d%e6%88%90%e5%8a%9f">
+												 为何推流不成功
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%85%bc%e5%ae%b9%e8%8b%b9%e6%9e%9c-mac-os">
+												 兼容苹果 Mac os
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+      <a href="//github.com/you " target="_blank" rel="noopener"><i class="fab fa-github mr-3" aria-hidden="true"></i></a>    
+    
+    
+      <a href="//linkedin.com/in/you" target="_blank" rel="noopener"><i class="fab fa-linkedin-in mr-3" aria-hidden="true"></i></a>
+    
+
+    
+      <a href="//facebook.com/you" target="_blank" rel="noopener"><i class="fab fa-facebook-f mr-3" aria-hidden="true"></i></a>
+    
+
+    
+    <a href="//google.com/you" target="_blank" rel="noopener"><i class="fab fa-google-plus-g mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//twitter.com/you" target="_blank" rel="noopener"><i class="fab fa-twitter mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//instagram.com/you" target="_blank" rel="noopener"><i class="fab fa-instagram mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//px500" target="_blank" rel="noopener"><i class="fab fa-500px mr-3" aria-hidden="true"></i></a>
+    
+
+
+    
+        <a href="mailto:you@email.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2019 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+  
+  <script src="/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="/js/vendors/katex/katex.min.js"> </script>
+  <script src="/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

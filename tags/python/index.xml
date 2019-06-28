@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on 杜帅的技术博客</title>
+    <link>/tags/python/</link>
+    <description>Recent content in python on 杜帅的技术博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Mon, 26 Jun 2017 15:04:48 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>认识Python</title>
+      <link>/blog/2017-06/%E8%AE%A4%E8%AF%86python/</link>
+      <pubDate>Mon, 26 Jun 2017 15:04:48 +0800</pubDate>
+      
+      <guid>/blog/2017-06/%E8%AE%A4%E8%AF%86python/</guid>
+      <description>人工智能 人工智能 机器学习 机器学习是近 20 多年兴起的一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。因为学习算法中涉及了大量的统计学理论，机器学习与统计推断学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Series on 杜帅的技术博客</title>
+    <link>/series/</link>
+    <description>Recent content in Series on 杜帅的技术博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Mon, 26 Jun 2017 15:04:48 +0800</lastBuildDate>
+    
+	<atom:link href="/series/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Web开发相关</title>
+      <link>/series/web%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/</link>
+      <pubDate>Mon, 26 Jun 2017 15:04:48 +0800</pubDate>
+      
+      <guid>/series/web%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>/series/python/</link>
+      <pubDate>Mon, 26 Jun 2017 15:04:48 +0800</pubDate>
+      
+      <guid>/series/python/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zn-Hans">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="杜帅的技术博客">
+  <meta name="description" content="人工智能 人工智能 机器学习 机器学习是近 20 多年兴起的一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。因为学习算法中涉及了大量的统计学理论，机器学习与统计推断学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可">
+  
+  <meta property="og:title" content="认识Python" />
+<meta property="og:description" content="人工智能 人工智能 机器学习 机器学习是近 20 多年兴起的一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。因为学习算法中涉及了大量的统计学理论，机器学习与统计推断学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/2017-06/%E8%AE%A4%E8%AF%86python/" />
+<meta property="article:published_time" content="2017-06-26T15:04:48&#43;08:00"/>
+<meta property="article:modified_time" content="2017-06-26T15:04:48&#43;08:00"/>
+
+
+
+  <title>
+  
+       认识Python | 杜帅的技术博客 
+  
+  </title>
+
+  <link rel="canonical" href="/blog/2017-06/%E8%AE%A4%E8%AF%86python/">
+
+  
+  
+
+  
+  <link href="/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+    
+    <link rel="stylesheet" href="/js/vendors/katex/katex.min.css">
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="/">
+          
+        <img class="avatar" src="/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> 杜帅的技术博客</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/blog/" >Blog  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/moment/" >Moment  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="/about/" >About  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('/img/header-slides/raw_1515691746.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('/img/header-slides//raw_1515847341.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="/">
+          
+            <img class="pull-right avatar avatar-md" src="/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>杜帅的技术博客</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+              <a href="//github.com/you" target="_blank" rel="noopener"><i class="fab fa-github pr-1" aria-hidden="true"></i></a>    
+            
+            
+              <a href="//linkedin.com/in/you" target="_blank" rel="noopener"><i class="fab fa-linkedin pr-1" aria-hidden="true"></i></a>
+            
+
+            
+              <a href="//facebook.com/you" target="_blank" rel="noopener"><i class="fab fa-facebook pr-1" aria-hidden="true"></i></a>
+            
+
+            
+            <a href="//google.com/you" target="_blank" rel="noopener"><i class="fab fa-google-plus pr-1" aria-hidden="true"></i></a>
+            
+
+            
+                <a href="//twitter.com/you" target="_blank" rel="noopener"><i class="fab fa-twitter pr-1" aria-hidden="true"></i></a>
+            
+
+            
+                <a href="//instagram.com/you" target="_blank" rel="noopener"><i class="fab fa-instagram pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+                <a href="//px500" target="_blank" rel="noopener"><i class="fab fa-500px pr-1" aria-hidden="true"></i></a>
+            
+    
+        
+            
+                <a href="mailto:you@email.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="/categories/%E6%B5%85%E8%B0%88python"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 浅谈python </a></li>
+      
+    
+    
+      
+        <li><a href="/series/python"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>python</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">认识Python</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jun 26, 2017</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>8 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            
+
+<h2 id="人工智能">人工智能</h2>
+
+<p>人工智能</p>
+
+<p>机器学习 机器学习是近 20 多年兴起的一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。因为学习算法中涉及了大量的统计学理论，机器学习与统计推断学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可以实现的，行之有效的学习算法。</p>
+
+<p>工业界未来需要什么样的机器学习人才？老生常谈，能将模型应用于专业领域的人，也就是跨领域让机器学习落地的人。有人会问现在我们不就需要这样的人吗？答案是肯定的，我们需要并将长期需要这样的人才，现阶段的机器学习落地还存在各种各样的困难。这样的需求不会是昙花一现，这就跟 web 开发是一个道理，从火热到降温也经过了十年的周期。一个领域的发展有特定的周期，机器学习的门槛比 web 开发高而且正属于朝阳期，所以大家致力于成为“专精特定领域”的机器学习专家并不过时。什么是特定领域的机器学习专家？举个例子，我以前曾回答“人工智能是否会替代财务工作者”时提到我曾在某个公司研究如何用机器学习自动化一部分审计工作，但遇到的最大困难是我自己对审计的了解有限，而其他审计师对我的工作不是非常支持导致进展缓慢。所以如果你有足够的机器学习知识，并对特定领域有良好的理解，在职场供求中你肯定可以站在优势的那一边。以我的另一个回答为例「反欺诈(Fraud Detection)中所用到的机器学习模型有哪些？」，特定领域的知识帮助我们更好的解释机器学习模型的结果，得到老板和客户的认可，这才是算法落了地。能写代码、构建模型的人千千万，但理解自己在做什么，并从中结合自己的领域知识提供商业价值的人少之又少。所以调侃一句，哪个方向的机器学习人才最紧缺？答：每个领域都需要专精的机器学习人才，你对特定领域的理解就是你的武器。</p>
+
+<p>机器学习三剑客 numpy pandas matplotlib</p>
+
+<p>机器学习常用库 sklern</p>
+
+<h2 id="深度学习">深度学习</h2>
+
+<p>tensorflow pytorch</p>
+
+<p>混合式移动 App 开发</p>
+
+<p>1.原生应用（Native App）使用相应移动平台特有的开发工具和语言进行开发。当今最流行的两大移动端平台 Android 和 i0S 各有自己的一套独立的开发模式。基于 Android 平台的 Java 语言开发基于 iOS 平台的 Obective-C 语言/Swift 语言开发优点 1. 执行速度快，界面流畅，动态效果出色 2. 性能稳定，对网络的依赖性小 3. 用户体验趋于完美，用户留存率高 4. 可以非常方便地调用操作系统提供的各种功能及终端硬件设备，如读取本地通讯录、推送通知提醒、调用摄像头等缺点 1、Android 和 iOS 上的应用需要单独开发、维护，开发成本很高。周期长，价格高。</p>
+
+<p>2.升级更新繁琐，每个系统要单独更新，程序猿完成工作后，开发者要重新上传，然后审核，用户才能更新。IOS 的审核至少需要一周，所以对于产品运营，无疑会加大时间投入。</p>
+
+<p>3.分发成本高。应用原生开发适用于无需经常更新程序框架的 APP。除此之外，游戏类的 APP 由于要大量加载显卡及动画效果，也通常采用原生模式进行开发。</p>
+
+<p>混合开发（Hybrid App）Hybrid App 是混合开发模式，这种模式将 Native App 与 Web App 进行混合开发，</p>
+
+<p>一部分基本界面用手机系统的原生语言开发。另一部分功能界面用 Web 技术开发移动端网页，利用原生语言中的 WebView 进行显示网页，</p>
+
+<p>这部分功能能在不升级 APP 的情况下动态更新，且在 iOS 或 Android 的 App 上同时运行。</p>
+
+<p>混合开发根据侧重点分为三种方案：Web 架构为重、编译转换、Native 架构为重。这里有种极端情况是只包了原生的壳，里面其实是 H5 网页，大家要有所了解。</p>
+
+<p>Hybrid App 结合了 Native App 和 Web App 两种开发模式，把这两种开发模式的优点和缺点折中互补。总体费用在原生开发和 HTML5 开发模式之间。开发周期也在两者之间。简而言之，中庸之选，在 Native APP 和 Web APP 两者之间。</p>
+
+<p>短视频</p>
+
+<p>随着 5G 网络的普及，短视频将会有更大的市场空间，短视频行业的春天真正到来了。在 4G 的时代，受限于网络传输速度和上网的费用，大家一般是在 WiFi 环境下看视频，当然少数土豪除外。但是进入 5G 时代以后，网络传输速度大幅提升，上网的资费也会调整到更加合理的空间，这样完全可以在手机上随时随地看视频。这样一来，短视频会有更大的发展空间。并且，会有更多的机构和工作室开始制作短视频。当然，短视频的竞争也会理加激烈.</p>
+
+<p>大数据</p>
+
+<p>按照马云的说法，现在已经从 IT 时代进入了 DT 时代，这个地方的 DT 强调的就是大数据。目前大数据的应用非常广泛，从资讯分发到视频娱乐，大数据无处不在。目前大数据已经成为了热门投资方向之一，在资本的大力支持下，大数据产业快速发展，预计到 2020 年中国大数据产业规模或超过万亿。在重视数据的今天，大数据行业必定会成为 2019 年的创业风口。</p>
+
+<p>新零售</p>
+
+<p>新零售可以说是互联网对传统零售行业的重构。2018 年腾讯和阿里在新零售领域展开了一场千亿大战，各大商超也都被迫卷入了这场战争。具体来说，目前形成了两大阵营，“腾讯+京东+永辉+沃尔玛+家乐福+步步高”对抗“阿里+苏宁+高鑫+新华都+联华”。在这场大战中，永辉的超级物种和阿里的盒马鲜生成为了双方的先锋。相信在巨头的牵引之下，越来越多的企业会展开新零售方面的业务。所以，在 2019 年，新零售也会继续是创业的风口。</p>
+
+<p>SaaS 系统</p>
+
+<p>SaaS，Software as a service，软件即服务。软件很好理解，可是软件为什么是服务呢？如果说“软件即工具”，我倒是很能理解。微信是通讯工具、朋友圈是社交工具、钉钉是企业内协同工具、淘宝是做生意的工具、当年的陌陌是 XX 的工具。明明是个工具，怎么可能是服务呢？服务可以大体分为两种。一种是餐厅服务生提供的这类服务，是由于社会化分工导致的“专业技能输出服务”。澡堂大叔给你搓澡、技师给你按摩、医生给你看病，都属于这类服务。另一种服务是“经验知识传授服务”。这类服务在个人场景上比较少，在企业上比较多。各类咨询公司就在向企业提供这种服务。企业挖角同行大牛，其实也是希望这些人能够将自己积累起来的各种经验用在自己的企业上，帮助企业解决问题。软件即服务，这里的服务指的就是上述的第二类服务。</p>
+
+<p>微服务</p>
+
+<p>RPC 框架好处</p>
+
+<p>http 接口是在接口不多、系统与系统交互较少的情况下，解决信息孤岛初期常使用的一种通信手段；</p>
+
+<p>优点就是简单、直接、开发方便。</p>
+
+<p>如果是一个大型的网站，内部子系统较多、接口非常多的情况下，RPC 框架的好处就显示出来了：</p>
+
+<p>首先就是长链接，不必每次通信都要像 http 一样去 3 次握手什么的，减少了网络开销；</p>
+
+<p>其次就是 RPC 框架一般都有注册中心，有丰富的监控管理；发布、下线接口、动态扩展等，对调用方来说是无感知、统一化的操作。</p>
+
+<p>最后是安全性。</p>
+
+<p>rpc 是一种概念，http 也是 rpc 实现的一种方式。</p>
+
+<p>论复杂度，dubbo/hessian 用起来是超级简单的。</p>
+
+<p>至于为什么用 dubbo/hessian，有几点：</p>
+
+<p>一是调用简单，真正提供了类似于调用本地方法一样调用接口的功能 。</p>
+
+<p>二是参数返回值简单明了 参数和返回值都是直接定义在 jar 包里的，不需要二次解析。</p>
+
+<p>三是 轻量，没有多余的信息。</p>
+
+<p>四是便于管理，基于 dubbo 的注册中心。</p>
+
+<p>RPC 能解耦服务</p>
+
+<p>RPC:远程过程调用。RPC 的核心并不在于使用什么协议。RPC 的目的是让你在本地调用远程的方法，而对你来说这个调用是透明的，你并不知道这个调用的方法是部署哪里。</p>
+
+<p>通过 RPC 能解耦服务，这才是使用 RPC 的真正目的。RPC 的原理主要用到了动态代理模式，至于 http 协议，只是传输协议而已。简单的实现可以参考 spring remoting，复杂的实现可以参考 dubbo。</p>
+
+<p>rpc=socket + 动态代理</p>
+
+<p>服务器通讯原理就是一台 socket 服务器 A,另一台 socket 客户端 B,现在如果要通讯的话直接以流方式写入或读出。这样能实现通讯，但有个问题。如何知道更多信息？</p>
+
+<p>比如需要发送流大小，编码，Ip 等。这样就有了协议，协议就是规范，就是发送的流中携带了很多的内容。那回到刚刚的问题。发送的内容就是文本类型，客户端就得序列化，那么常用的就有 json，xml 之类，如果想把内容变得更小，那就有二进制了。把文本变成二进制传递。</p>
+
+<p>说到 rpc 与 http 接口，不要太复杂了。rpc 协议更简单内容更小，那么来说效率是要高一点</p>
+
+<p>rpc 是什么？就是 socket 加动态代理。</p>
+
+<p>##总结</p>
+
+<p>学技术应该是知其然知其所以然，我们得明白什么场景，或者什么业务需要它，它能解决其他技术不能解决或者不方便解决的问题。</p>
+
+<p>RPC 是一个软件结构概念，是构建分布式应用的理论基础。就好比为啥你家可以用到发电厂发出来的电？是因为电是可以传输的。至于用铜线还是用铁丝还是其他种类的导线，也就是用 http 还是用其他协议的问题了。这个要看什么场景，对性能要求怎么样。</p>
+
+<p>在 java 中的最基本的就是 RMI 技术，它是 java 原生的应用层分布式技术。我们可以肯定的是在传输性能方面，RMI 的性能是优于 HTTP 的。</p>
+
+<p>那为啥很少用到这个技术？那是因为用这个有很多局限性，首先它要保证传输的两端都要要用 java 实现，且两边需要有相同的对象类型和代理接口，不需要容器，但是加大了编程的难度，在应用内部的各个子系统之间还是会看到他的身影，比如 EJB 就是基于 rmi 技术的。</p>
+
+<p>这就与目前的 bs 架构的软件大相径庭。用 http 必须要服务端位于 http 容器里面，这样减少了网络传输方面的开发，只需要关注业务开发即可。所以在架构一个软件的时候，不能一定根据需求选定技术。</p>
+
+<p>社区团购</p>
+
+<p>所谓社区团购，是指以小区为单位的辐射圈，在辐射圈内的消费者通过团购平台预定商品，平台按量采购直销，其中省去的成本则是商品的差价。</p>
+
+<p>社区团购有什么特点？这种零售方式特点很明显：</p>
+
+<p>1、小众群体服务好；2、以销定采零库存；3、集中订货成本低。</p>
+
+<p>这么好的销售方式之前怎么就没人想到呢？倒不是没人想到，只是之前还没火，几年前也有网络团购，但由于行业暴露出商品歧视、服务歧视、霸王条款等问题，沉默了一段时间，但在不久之前“拼多多”就以上市当天 351 亿美元的市值出现在我们面前，拼多多的成功很大原因是时机刚好在市场价格透明、物流系统成熟。很多新事物的产生都是市场需求、时机刚好。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="/tags/mac" role="button">mac </a></li>
+      
+    
+      <li><a href="/tags/python" role="button">python </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=/blog/2015-06/%E7%9B%B4%E6%92%AD/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>直播</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=/blog/2017-06/web%E5%BC%80%E5%8F%91/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>Web开发</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%ba%ba%e5%b7%a5%e6%99%ba%e8%83%bd">
+												 人工智能
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0">
+												 深度学习
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+      <a href="//github.com/you " target="_blank" rel="noopener"><i class="fab fa-github mr-3" aria-hidden="true"></i></a>    
+    
+    
+      <a href="//linkedin.com/in/you" target="_blank" rel="noopener"><i class="fab fa-linkedin-in mr-3" aria-hidden="true"></i></a>
+    
+
+    
+      <a href="//facebook.com/you" target="_blank" rel="noopener"><i class="fab fa-facebook-f mr-3" aria-hidden="true"></i></a>
+    
+
+    
+    <a href="//google.com/you" target="_blank" rel="noopener"><i class="fab fa-google-plus-g mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//twitter.com/you" target="_blank" rel="noopener"><i class="fab fa-twitter mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//instagram.com/you" target="_blank" rel="noopener"><i class="fab fa-instagram mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//px500" target="_blank" rel="noopener"><i class="fab fa-500px mr-3" aria-hidden="true"></i></a>
+    
+
+
+    
+        <a href="mailto:you@email.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2019 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+  
+  <script src="/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="/js/vendors/katex/katex.min.js"> </script>
+  <script src="/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

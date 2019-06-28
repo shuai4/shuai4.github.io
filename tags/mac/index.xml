@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mac on 杜帅的技术博客</title>
+    <link>/tags/mac/</link>
+    <description>Recent content in mac on 杜帅的技术博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Mon, 26 Jun 2017 15:04:48 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Web开发</title>
+      <link>/blog/2017-06/web%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Mon, 26 Jun 2017 15:04:48 +0800</pubDate>
+      
+      <guid>/blog/2017-06/web%E5%BC%80%E5%8F%91/</guid>
+      <description>Web 开发相关 TCP 的三次握手 简单理解深入理解 第一次握手：建立连接。客户端发送连接请求报文段，将 SYN 位置为 1，Sequence Number 为 x；然后，客户端进入 SYN_SEND 状态，等待服务器的确认 第二次握手：服务器收到 SYN 报文段。服务器收到客户端的 SYN 报文段，需要对这个 SYN 报文段进行确认，设置 Acknowledgment Number 为 x+1(Sequence Number+1)；同时，自己自己还要发送 SYN 请求信息，将 SYN 位置为 1，Sequence Number 为 y；服务器端将上述所有信息放到一个报文段（即 SYN+ACK 报</description>
+    </item>
+    
+    <item>
+      <title>认识Python</title>
+      <link>/blog/2017-06/%E8%AE%A4%E8%AF%86python/</link>
+      <pubDate>Mon, 26 Jun 2017 15:04:48 +0800</pubDate>
+      
+      <guid>/blog/2017-06/%E8%AE%A4%E8%AF%86python/</guid>
+      <description>人工智能 人工智能 机器学习 机器学习是近 20 多年兴起的一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。因为学习算法中涉及了大量的统计学理论，机器学习与统计推断学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可</description>
+    </item>
+    
+    <item>
+      <title>直播</title>
+      <link>/blog/2015-06/%E7%9B%B4%E6%92%AD/</link>
+      <pubDate>Sun, 28 Jun 2015 15:04:48 +0800</pubDate>
+      
+      <guid>/blog/2015-06/%E7%9B%B4%E6%92%AD/</guid>
+      <description>直播原理 在视频直播领域，有不同的商家提供各种的商业解决方案，其中比较靠谱的服务商有阿里云直播，腾讯云直播，以及又拍云和网易云的有偿直播服务，服务包括软硬件设备，摄像机，编码器，流媒体服务器等 视频直播的流程可以分为如下几步： 采集 —&amp;gt;处理—&amp;gt;编码和封装—&amp;gt;推流到服务器—&amp;gt;服务器流分发—&amp;gt;播放器流播放 一般情况下视频采集处理后推流到流媒体服务器，第一部分功能完成。第二部分就是</description>
+    </item>
+    
+    <item>
+      <title>Web开发2</title>
+      <link>/blog/2015-06/web%E5%BC%80%E5%8F%912/</link>
+      <pubDate>Fri, 26 Jun 2015 15:04:48 +0800</pubDate>
+      
+      <guid>/blog/2015-06/web%E5%BC%80%E5%8F%912/</guid>
+      <description>websocket WebSocket 是 HTML5 下一种新的协议。它实现了浏览器与服务器全双工通信，能更好的节省服务器资源和带宽并达到实时通讯的目的。 它与 HTTP 一样通过已建立的 TCP 连接来传输数据，但是它和 HTTP 最大不同是：WebSocket 是一种双向通信协议。在建立连接后，WebSocket 服务器端和客户端都能主动向对方发送或接收数据，就像 Socket 一样；WebSocket 需要像 TCP 一样，先建立连接，连接成功后才能相互通信。 传统 HTTP 客户端与服务器请求响应模式如</description>
+    </item>
+    
+  </channel>
+</rss>
